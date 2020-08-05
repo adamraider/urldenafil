@@ -8,20 +8,29 @@ const monk = require("monk");
 const SparkMD5 = require("spark-md5");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const env = "development";
 
-app.use(helmet());
+const isDev = Boolean(env === "development");
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 // see https://expressjs.com/en/guide/behind-proxies.html
 app.set("trust proxy", 1);
 
-const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-});
+if (!isDev) {
+  const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+  });
 
-//  apply to all requests
-app.use(limiter);
+  //  apply to all requests
+  app.use(limiter);
+}
 
 require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
@@ -35,7 +44,9 @@ const db = monk(process.env.MONGODB_URI);
 const urls = db.get("urls");
 urls.createIndex({ slug: 1 }, { unique: true });
 
-app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(
+  express.static(path.join(__dirname, "..", "public"), { maxAge: "12h" })
+);
 app.use(express.json());
 
 const INDEX_PATH = path.join(__dirname, "index.html");
