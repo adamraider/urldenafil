@@ -6,6 +6,20 @@ const os = require("os");
 const hostname = os.hostname();
 const monk = require("monk");
 const SparkMD5 = require("spark-md5");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+
+// Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+// see https://expressjs.com/en/guide/behind-proxies.html
+app.set("trust proxy", 1);
+
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+
+//  apply to all requests
+app.use(limiter);
 
 require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
@@ -21,11 +35,12 @@ urls.createIndex({ slug: 1 }, { unique: true });
 
 app.use(express.static(path.join(__dirname, "..", "public")));
 app.use(express.json());
+app.use(helmet());
 
 const INDEX_PATH = path.join(__dirname, "index.html");
 
 app.post("/url", async (req, res) => {
-  console.log(req.params);
+  console.log("/url", req.params);
   const toUrl = req.body.toUrl;
   const slug = createLongURL();
   const hash = getHash(slug);
@@ -36,7 +51,7 @@ app.post("/url", async (req, res) => {
 });
 
 app.get("/:id", async (req, res) => {
-  console.log(req.params);
+  console.log("/:id", req.params);
   if (req.params.id) {
     const record = await urls.findOne({ hash: getHash(req.params.id) });
 
