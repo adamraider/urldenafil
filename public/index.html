@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        color: hsl(224, 40%, 10%);
+        font-family: "Roboto";
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Noto Sans";
+      }
+
+      h1 {
+        color: hsl(224, 40%, 15%);
+      }
+
+      h3 {
+        color: hsl(224, 40%, 15%);
+      }
+
+      .page {
+        max-width: 500px;
+        position: relative;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        font-size: 1rem;
+        opacity: 0.7;
+        background-color: rgba(255, 255, 255, 0.9);
+      }
+
+      input {
+        border-radius: 0.25rem;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        padding: 0.5rem 0.75rem;
+        font-size: 1.25rem;
+        width: 100%;
+        margin-right: 1rem;
+        outline: 0;
+        border: 1px solid hsl(255, 0%, 95%) !important;
+        box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11),
+          0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+
+      input:focus {
+        box-shadow: 0 6px 8px rgba(50, 50, 93, 0.13),
+          0 3px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid hsl(224, 40%, 90%) !important;
+      }
+
+      input::placeholder {
+        opacity: 0.5;
+      }
+
+      button {
+        display: inline-block;
+        background: linear-gradient(
+          to bottom right,
+          hsl(224, 100%, 67%),
+          hsl(238, 100%, 67%)
+        );
+        outline: 0;
+        border: 0;
+        text-transform: uppercase;
+        color: #fff;
+        font-weight: bold;
+        font-size: 1rem;
+        padding: 0.75rem 2rem;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11),
+          0 1px 3px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+        transition: 0.1s ease;
+        transform: translateY(0);
+        margin: 0;
+      }
+      button:not(:last-child) {
+        margin-right: 1rem;
+      }
+      button:hover,
+      button:not(:last-child) :focus {
+        transform: translateY(-1px);
+        box-shadow: 0 7px 14px rgba(50, 50, 93, 0.05),
+          0 3px 6px rgba(0, 0, 0, 0.08);
+        outline: 0;
+      }
+
+      blockquote {
+        padding: 1.25rem;
+        margin: 1.25rem 0;
+        background-color: #f7f7f7;
+        border-radius: 0.25rem;
+        border: 1px solid #e3e3e3;
+        color: #000;
+      }
+      blockquote footer {
+        margin-top: 0.25rem;
+        opacity: 0.5;
+      }
+
+      blockquote footer:before {
+        content: "\2014\A0";
+      }
+
+      .dots {
+        position: absolute;
+        top: -70px;
+        left: -150px;
+        z-index: -1;
+        width: 200px;
+        height: 200px;
+        content: "";
+        background: url(/dots-small.svg);
+      }
+    </style>
+    <title>URLdenafil™</title>
+  </head>
+  <body>
+    <div class="page">
+      <div class="dots"></div>
+
+      <h1>URLdenafil™</h1>
+      <h3 style="opacity: 0.5; margin-bottom: 3rem;">
+        The world's first URL elongator.
+      </h3>
+      <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.5;">
+        Is your URL <em>too</em> short? Do you find that your conversion rates
+        just don't perform like they used to?
+      </p>
+
+      <form id="form" action="/url" method="POST" style="margin-bottom: 3rem;">
+        <label for="url">URL</label>
+        <div style="display: flex;">
+          <input
+            type="url"
+            id="url"
+            placeholder="https://bit.ly/puny"
+            required
+          />
+          <button type="submit">Elongate</button>
+        </div>
+      </form>
+
+      <h4 style="font-size: 1.25rem; opacity: 0.5; margin-bottom: 1rem;">
+        Whar are people saying about it?
+      </h4>
+      <blockquote>
+        Fifty-three year old wordpress site used the URLdenafil™ for the first
+        time tonight. Worked perfectly, could have hung a bag of potatoes on it.
+        Wife very happy.
+        <footer>Alec Petros</footer>
+      </blockquote>
+      <blockquote>
+        It's like d*ck pills, but for your website.
+        <footer>Alan Friedman</footer>
+      </blockquote>
+    </div>
+  </body>
+  <script>
+    var input = document.getElementById("url");
+    input.focus();
+  </script>
+</html>
