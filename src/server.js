@@ -9,6 +9,8 @@ const SparkMD5 = require("spark-md5");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
+app.use(helmet());
+
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 // see https://expressjs.com/en/guide/behind-proxies.html
 app.set("trust proxy", 1);
@@ -35,7 +37,6 @@ urls.createIndex({ slug: 1 }, { unique: true });
 
 app.use(express.static(path.join(__dirname, "..", "public")));
 app.use(express.json());
-app.use(helmet());
 
 const INDEX_PATH = path.join(__dirname, "index.html");
 
