@@ -2,14 +2,11 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const dictionary = require("./dictionary.json");
-const os = require("os");
-const hostname = os.hostname();
 const monk = require("monk");
 const SparkMD5 = require("spark-md5");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const env = "development";
-
+const env = process.env.ENVIRONMENT;
 const isDev = Boolean(env === "development");
 
 app.use(
@@ -56,7 +53,9 @@ app.post("/url", async (req, res) => {
   const toUrl = req.body.toUrl;
   const slug = createLongURL();
   const hash = getHash(slug);
-  const newUrl = `${PROTOCOL}//${HOSTNAME}${PORT ? ":" + PORT : ""}/${slug}`;
+  const newUrl = `${PROTOCOL}//${HOSTNAME}${
+    isDev && PORT ? ":" + PORT : ""
+  }/${slug}`;
 
   await urls.insert({ slug: slug, url: newUrl, toUrl, hash });
 
