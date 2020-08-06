@@ -52,14 +52,15 @@ app.use(express.json());
 const INDEX_PATH = path.join(__dirname, "index.html");
 
 app.post("/url", async (req, res) => {
-  console.log("/url", req.params);
+  console.log("/url", req.body);
   const toUrl = req.body.toUrl;
   const slug = createLongURL();
   const hash = getHash(slug);
   const newUrl = `${PROTOCOL}//${HOSTNAME}${PORT ? ":" + PORT : ""}/${slug}`;
 
-  const created = await urls.insert({ slug: slug, url: newUrl, toUrl, hash });
-  res.json(created);
+  await urls.insert({ slug: slug, url: newUrl, toUrl, hash });
+
+  res.json({ toUrl, url: newUrl });
 });
 
 app.get("/:id", async (req, res) => {
@@ -83,10 +84,15 @@ app.listen(PORT, () => {
 
 function createLongURL() {
   const urlWords = [];
-  while (urlWords.length < 3) {
+  while (urlWords.length < 60) {
     urlWords.push(DICTIONARY[Math.floor(Math.random() * DICTIONARY.length)]);
   }
-  return encodeURIComponent(urlWords.join("-").toLowerCase());
+  return encodeURIComponent(
+    urlWords
+      .join("-")
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9-_]/g, "")
+  );
 }
 
 function getHash(slug) {
