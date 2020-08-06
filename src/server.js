@@ -6,8 +6,6 @@ const monk = require("monk");
 const SparkMD5 = require("spark-md5");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const env = process.env.ENVIRONMENT;
-const isDev = Boolean(env === "development");
 
 app.use(
   helmet({
@@ -19,6 +17,11 @@ app.use(
 // see https://expressjs.com/en/guide/behind-proxies.html
 app.set("trust proxy", 1);
 
+require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
+
+const env = process.env.ENVIRONMENT;
+const isDev = Boolean(env === "development");
+
 if (!isDev) {
   const limiter = rateLimit({
     windowMs: 10 * 60 * 1000, // 10 minutes
@@ -29,12 +32,10 @@ if (!isDev) {
   app.use(limiter);
 }
 
-require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
-
 const PORT = process.env.PORT || 3000;
 const HOSTNAME = process.env.HOSTNAME || "localhost";
 const SECRET = process.env.SECRET || "top_secret";
-const PROTOCOL = "http:";
+const PROTOCOL = process.env.PROTOCOL || "http:";
 const DICTIONARY = Object.keys(dictionary);
 
 const db = monk(process.env.MONGODB_URI);
